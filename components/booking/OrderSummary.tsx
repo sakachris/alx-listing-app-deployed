@@ -1,4 +1,5 @@
 import { HERO_BG } from "@/constants";
+import Image from "next/image";
 
 interface OrderSummaryProps {
   bookingDetails: {
@@ -13,7 +14,28 @@ interface OrderSummaryProps {
 const OrderSummary: React.FC<OrderSummaryProps> = ({ bookingDetails }) => (
   <div className="bg-white p-6 shadow-md rounded-lg">
     <h2 className="text-xl font-semibold">Review Order Details</h2>
+
     <div className="flex items-center mt-4">
+      <div className="relative w-32 h-32 rounded-md">
+        <Image
+          src={HERO_BG}
+          alt="Property"
+          fill
+          className="object-cover rounded-md"
+          sizes="128px"
+        />
+      </div>
+
+      <div className="ml-4">
+        <h3 className="text-lg font-semibold">{bookingDetails.propertyName}</h3>
+        <p className="text-sm text-gray-500">⭐ 4.76 (345 reviews)</p>
+        <p className="text-sm text-gray-500">
+          {bookingDetails.startDate} • {bookingDetails.totalNights} Nights
+        </p>
+      </div>
+    </div>
+
+    {/* <div className="flex items-center mt-4">
       <img
         src={HERO_BG}
         alt="Property"
@@ -26,7 +48,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({ bookingDetails }) => (
           {bookingDetails.startDate} • {bookingDetails.totalNights} Nights
         </p>
       </div>
-    </div>
+    </div> */}
 
     {/* Price Breakdown */}
     <div className="mt-6 space-y-2 text-gray-700">

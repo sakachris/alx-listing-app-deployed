@@ -4,6 +4,7 @@ export const API_BASE = process.env.NEXT_PUBLIC_API_URL;
 export async function apiRequest(
   endpoint: string,
   method = "GET",
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   body?: any,
   token?: string
 ) {
@@ -22,6 +23,7 @@ export async function apiRequest(
     next: { revalidate: 0 }, // disables caching for dynamic calls
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let data: any;
   try {
     data = await resp.json();
@@ -37,40 +39,3 @@ export async function apiRequest(
 
   return data;
 }
-
-// const API_BASE = process.env.NEXT_PUBLIC_API_URL;
-
-// export async function apiRequest(
-//   endpoint: string,
-//   method = "GET",
-//   body?: any,
-//   token?: string
-// ) {
-//   const headers: Record<string, string> = {
-//     "Content-Type": "application/json",
-//   };
-//   if (token) headers["Authorization"] = `Bearer ${token}`;
-
-//   const resp = await fetch(`${API_BASE}${endpoint}`, {
-//     method,
-//     headers,
-//     body: body ? JSON.stringify(body) : undefined,
-//   });
-
-//   let data: any;
-//   try {
-//     // Try parsing JSON once only
-//     data = await resp.json();
-//   } catch (err) {
-//     // Fallback if response isn’t JSON
-//     data = { detail: "Invalid response format" };
-//   }
-
-//   if (!resp.ok) {
-//     const errorMsg =
-//       data?.detail || data?.message || JSON.stringify(data) || "Request failed";
-//     throw new Error(errorMsg);
-//   }
-
-//   return data;
-// }

@@ -3,7 +3,7 @@ import { apiRequest } from "@/lib/api";
 import React, { useState } from "react";
 
 interface BookingSectionProps {
-  price: any;
+  price: number;
   propertyId: string;
 }
 
@@ -43,12 +43,16 @@ const BookingSection: React.FC<BookingSectionProps> = ({
           start_date: checkIn,
           end_date: checkOut,
         },
-        token // ✅ pass token here
+        token ?? undefined
       );
 
       setMessage(`Booking successful! Total: $${data.total_price}`);
-    } catch (err: any) {
-      setMessage(err.message || "Booking failed");
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setMessage(err.message);
+      } else {
+        setMessage("Booking failed");
+      }
     } finally {
       setLoading(false);
     }

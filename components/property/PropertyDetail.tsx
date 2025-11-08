@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Image from "next/image";
 
 interface PropertyProps {
   property_id: string;
@@ -48,6 +49,36 @@ const PropertyDetail: React.FC<{ property: PropertyProps }> = ({
 
       {/* Image Grid */}
       <div className="grid grid-cols-4 gap-2 mt-6">
+        {/* Main large image */}
+        <div className="col-span-2 row-span-2 relative w-full">
+          <Image
+            src={property.image}
+            alt={property.name}
+            fill
+            className="rounded-lg object-cover"
+            sizes="(max-width: 768px) 100vw, 50vw"
+          />
+        </div>
+
+        {/* Four smaller images */}
+        {Array(4)
+          .fill(property.image)
+          .map((imgSrc, idx) => (
+            <div key={idx} className="relative w-full h-[200px]">
+              <Image
+                src={imgSrc}
+                alt={`extra ${idx + 1}`}
+                fill
+                className="rounded-lg object-cover"
+                sizes="(max-width: 768px) 100vw, 25vw"
+              />
+            </div>
+          ))}
+      </div>
+
+      {/* Image Grid old */}
+
+      {/* <div className="grid grid-cols-4 gap-2 mt-6">
         <img
           src={property.image}
           alt={property.name}
@@ -73,7 +104,7 @@ const PropertyDetail: React.FC<{ property: PropertyProps }> = ({
           alt="extra"
           className="w-full h-[200px] object-cover rounded-lg"
         />
-      </div>
+      </div> */}
 
       {/* Tabs */}
       <div className="mt-8">

@@ -39,13 +39,29 @@ export default function PropertyDetailPage() {
       try {
         const data = await apiRequest(`/properties/${id}/`, "GET");
         setProperty(data);
-      } catch (err: any) {
-        console.error("Error fetching property:", err);
-        setError(err.message || "Failed to load property details.");
+      } catch (err) {
+        if (err instanceof Error) {
+          console.error("Error fetching property:", err);
+          setError(err.message || "Failed to load property details.");
+        } else {
+          setError("An unknown error occurred.");
+        }
       } finally {
         setLoading(false);
       }
     };
+
+    // const fetchProperty = async () => {
+    //   try {
+    //     const data = await apiRequest(`/properties/${id}/`, "GET");
+    //     setProperty(data);
+    //   } catch (err: any) {
+    //     console.error("Error fetching property:", err);
+    //     setError(err.message || "Failed to load property details.");
+    //   } finally {
+    //     setLoading(false);
+    //   }
+    // };
 
     fetchProperty();
   }, [id]);
@@ -69,7 +85,7 @@ export default function PropertyDetailPage() {
         {/* RIGHT: Booking Section */}
         <div className="lg:col-span-1">
           <BookingSection
-            price={property.pricepernight}
+            price={Number(property.pricepernight)}
             propertyId={property.property_id}
           />
         </div>

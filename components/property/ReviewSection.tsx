@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { apiRequest } from "@/lib/api";
+import Image from "next/image";
 
 interface Review {
   review_id: string;
@@ -21,8 +22,12 @@ const ReviewSection: React.FC<{ propertyId: string }> = ({ propertyId }) => {
       try {
         const data = await apiRequest(`/properties/${propertyId}/reviews/`);
         setReviews(data);
-      } catch (err: any) {
-        setError(err.message);
+      } catch (err) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError("An unknown error occurred.");
+        }
       } finally {
         setLoading(false);
       }
@@ -54,7 +59,7 @@ const ReviewSection: React.FC<{ propertyId: string }> = ({ propertyId }) => {
         {reviews.map((review) => (
           <div key={review.review_id} className="border-b pb-6">
             <div className="flex items-center mb-3">
-              <img
+              {/* <img
                 src={
                   review.avatar?.startsWith("/static")
                     ? `${process.env.NEXT_PUBLIC_API_URL?.replace(
@@ -65,6 +70,20 @@ const ReviewSection: React.FC<{ propertyId: string }> = ({ propertyId }) => {
                 }
                 alt={review.name}
                 className="w-12 h-12 rounded-full object-cover mr-4"
+              /> */}
+              <Image
+                src={
+                  review.avatar?.startsWith("/static")
+                    ? `${process.env.NEXT_PUBLIC_API_URL?.replace(
+                        /\/api\/?$/,
+                        ""
+                      )}${review.avatar}`
+                    : review.avatar
+                }
+                alt={review.name}
+                width={48} // match original w-12
+                height={48} // match original h-12
+                className="rounded-full object-cover mr-4"
               />
               <div>
                 <p className="font-bold">{review.name}</p>
